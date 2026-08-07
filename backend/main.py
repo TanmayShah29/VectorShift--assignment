@@ -1,3 +1,4 @@
+import os
 from typing import Any
 
 from fastapi import FastAPI
@@ -13,9 +14,19 @@ class Pipeline(BaseModel):
 
 app = FastAPI()
 
+# Configurable via env (comma-separated) so the same backend can be pointed
+# at a deployed frontend origin without a code change; defaults to the
+# local CRA dev server used throughout this assessment.
+_default_origins = "http://localhost:3000"
+allowed_origins = [
+    origin.strip()
+    for origin in os.environ.get("FRONTEND_ORIGINS", _default_origins).split(",")
+    if origin.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

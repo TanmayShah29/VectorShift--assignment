@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useStore } from './store';
 
+// Configurable via .env (REACT_APP_BACKEND_URL) so the same build can point
+// at a different backend without code changes; falls back to the local dev
+// server used throughout this assessment.
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 export const SubmitButton = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const nodes = useStore((state) => state.nodes);
@@ -10,7 +15,7 @@ export const SubmitButton = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:8000/pipelines/parse', {
+      const response = await fetch(`${BACKEND_URL}/pipelines/parse`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,7 +35,7 @@ export const SubmitButton = () => {
       );
     } catch (error) {
       alert(
-        'Could not reach the backend. Please make sure FastAPI is running on http://localhost:8000.'
+        `Could not reach the backend. Please make sure FastAPI is running on ${BACKEND_URL}.`
       );
     } finally {
       setIsSubmitting(false);
