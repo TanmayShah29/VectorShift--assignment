@@ -121,7 +121,7 @@ export const PipelineUI = () => {
     useEffect(() => {
         const onKey = (e) => {
             if (
-                e.key === 'f' || e.key === 'F' &&
+                (e.key === 'f' || e.key === 'F') &&
                 // Don't fire while typing in an input
                 !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)
             ) {

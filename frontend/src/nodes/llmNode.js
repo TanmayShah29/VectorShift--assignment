@@ -1,7 +1,7 @@
 import { BaseNode } from './BaseNode';
 import { nodeDefinitions } from './nodeDefinitions';
 
-export const LLMNode = ({ id, data }) => {
+export const LLMNode = ({ id, data, selected }) => {
   const definition = nodeDefinitions.llm;
 
   const fields = definition.fields.map((field) => ({
@@ -19,6 +19,7 @@ export const LLMNode = ({ id, data }) => {
       inputs={definition.inputs}
       outputs={definition.outputs}
       fields={fields}
+      selected={selected}
     />
   );
 };

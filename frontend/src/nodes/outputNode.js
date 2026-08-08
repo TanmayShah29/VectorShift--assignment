@@ -1,7 +1,7 @@
 import { BaseNode } from './BaseNode';
 import { nodeDefinitions } from './nodeDefinitions';
 
-export const OutputNode = ({ id, data }) => {
+export const OutputNode = ({ id, data, selected }) => {
   const definition = nodeDefinitions.customOutput;
 
   const fields = definition.fields.map((field) => ({
@@ -18,6 +18,7 @@ export const OutputNode = ({ id, data }) => {
       accent={definition.accent}
       inputs={definition.inputs}
       fields={fields}
+      selected={selected}
     />
   );
 };

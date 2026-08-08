@@ -4,7 +4,7 @@ import { nodeDefinitions } from './nodeDefinitions';
 import { useStore } from '../store';
 import { getVariables, getTextNodeDimensions } from './textNodeUtils';
 
-export const TextNode = ({ id, data }) => {
+export const TextNode = ({ id, data, selected }) => {
   const updateNodeField = useStore((state) => state.updateNodeField);
   const definition = nodeDefinitions.text;
   const text = data.text ?? '';
@@ -56,6 +56,7 @@ export const TextNode = ({ id, data }) => {
       outputs={definition.outputs}
       className="text-node"
       style={{ width }}
+      selected={selected}
     >
       <label className="node-field node-field--full">
         <span>Text</span>
