@@ -19,6 +19,13 @@
   box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   color: var(--ink);
@@ -45,7 +52,8 @@ button {
 .app-shell {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* ─── SIDEBAR ─────────────────────────────────────────── */
@@ -56,6 +64,8 @@ button {
   padding: 20px 16px;
   border-right: 1px solid var(--border);
   background: var(--surface);
+  overflow-y: auto;
+  height: 100vh;
 }
 
 .toolbar__brand {
@@ -241,9 +251,12 @@ button {
 .workspace {
   display: flex;
   min-width: 0;
+  min-height: 0;
+  height: 100vh;
   flex-direction: column;
-  padding: 20px;
-  gap: 16px;
+  padding: 16px;
+  gap: 12px;
+  overflow: hidden;
 }
 
 /* ─── CANVAS SHELL ────────────────────────────────────── */
@@ -347,8 +360,8 @@ button {
 /* ─── REACTFLOW WRAPPER ────────────────────────────────── */
 .reactflow-wrapper {
   position: relative;
-  height: calc(100vh - 160px);
-  min-height: 560px;
+  flex: 1;
+  min-height: 0;  /* critical for flex children to shrink below content size */
 }
 
 /* Warm canvas background */
