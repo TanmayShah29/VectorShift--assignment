@@ -10,6 +10,24 @@ export const useStore = create((set, get) => ({
     nodes: [],
     edges: [],
     nodeIDs: {},
+    // Tracks the node/handle a connection drag started from, so handles on
+    // other nodes can highlight themselves as valid drop targets while the
+    // user is dragging a new edge.
+    connectingNodeId: null,
+    connectingHandleType: null,
+    setConnectingHandle: (nodeId, handleType) => {
+      set({ connectingNodeId: nodeId, connectingHandleType: handleType });
+    },
+    // Result of the last /pipelines/parse submission, surfaced via the
+    // in-app ResultModal instead of a native browser alert.
+    pipelineResult: null,
+    pipelineResultStatus: null,
+    setPipelineResult: (result, status) => {
+      set({ pipelineResult: result, pipelineResultStatus: status });
+    },
+    clearPipelineResult: () => {
+      set({ pipelineResult: null, pipelineResultStatus: null });
+    },
     getNodeID: (type) => {
         const newIDs = {...get().nodeIDs};
         if (newIDs[type] === undefined) {

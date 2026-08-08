@@ -10,6 +10,7 @@ export const SubmitButton = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const nodes = useStore((state) => state.nodes);
   const edges = useStore((state) => state.edges);
+  const setPipelineResult = useStore((state) => state.setPipelineResult);
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -28,14 +29,11 @@ export const SubmitButton = () => {
       }
 
       const result = await response.json();
-      const dagText = result.is_dag ? 'is a DAG' : 'contains a cycle';
-
-      alert(
-        `Pipeline summary\n\nNodes: ${result.num_nodes}\nEdges: ${result.num_edges}\nStatus: This pipeline ${dagText}.`
-      );
+      setPipelineResult(result, 'success');
     } catch (error) {
-      alert(
-        `Could not reach the backend. Please make sure FastAPI is running on ${BACKEND_URL}.`
+      setPipelineResult(
+        { message: `Please make sure FastAPI is running on ${BACKEND_URL}.` },
+        'error'
       );
     } finally {
       setIsSubmitting(false);

@@ -25,6 +25,15 @@ All node types render through two shared components in `frontend/src/nodes/`:
 
 This means styling or structural changes (spacing, handle placement, the delete button, focus states, etc.) are made once in `BaseNode`/`index.css` and apply to every node automatically, and new nodes with standard field types cost a single object literal rather than a new component file.
 
+## UX Details Worth Noticing
+
+A few things beyond the baseline requirements, each tied back to one of the four parts rather than being extra scope:
+
+- **In-app result modal, not `window.alert()`** (`resultModal.js`) — Part 4 asks for "an alert" showing `num_nodes`/`num_edges`/`is_dag` "in a user-friendly manner." A styled, color-coded modal (green check for a valid DAG, amber warning for a cycle, red for a backend error) satisfies that more literally than a native browser popup, and is keyboard-dismissable (`Esc`) and screen-reader announced (`role="alert"`).
+- **Connection-compatibility highlighting** (`BaseNode.js` + `store.js`'s `connectingNodeId`) — while dragging a new edge, every valid handle on other nodes pulses, making the node abstraction's shared `Handle` rendering visibly pay off.
+- **Empty-canvas hint** (`ui.js`) — a first-run affordance instead of a blank grid.
+- **Clickable variable pills** (`textNode.js`) — clicking a detected `{{ variable }}` re-inserts it at the cursor, so a variable can be reused without retyping the curly-brace syntax.
+
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) (v16 or newer)

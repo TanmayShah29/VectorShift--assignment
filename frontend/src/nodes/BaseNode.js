@@ -75,6 +75,16 @@ export const BaseNode = memo(
     className = '',
   }) => {
     const deleteNode = useStore((state) => state.deleteNode);
+    const connectingNodeId = useStore((state) => state.connectingNodeId);
+    const connectingHandleType = useStore((state) => state.connectingHandleType);
+
+    // While the user drags a new edge from a source handle, every target
+    // handle on every *other* node is a valid drop point (and vice versa if
+    // they start the drag from a target handle) - highlight those so it's
+    // obvious at a glance where the connection can land.
+    const isConnecting = connectingNodeId !== null && connectingNodeId !== id;
+    const targetsHighlighted = isConnecting && connectingHandleType === 'source';
+    const sourcesHighlighted = isConnecting && connectingHandleType === 'target';
 
     const handleDelete = (event) => {
       event.stopPropagation();
@@ -99,7 +109,7 @@ export const BaseNode = memo(
             type="target"
             position={Position.Left}
             id={`${id}-${input.id}`}
-            className="node-handle node-handle--target"
+            className={`node-handle node-handle--target ${targetsHighlighted ? 'node-handle--highlight' : ''}`}
             style={{ top: input.top || getHandlePosition(index, inputs.length) }}
           />
         ))}
@@ -130,7 +140,7 @@ export const BaseNode = memo(
             type="source"
             position={Position.Right}
             id={`${id}-${output.id}`}
-            className="node-handle node-handle--source"
+            className={`node-handle node-handle--source ${sourcesHighlighted ? 'node-handle--highlight' : ''}`}
             style={{ top: output.top || getHandlePosition(index, outputs.length) }}
           />
         ))}

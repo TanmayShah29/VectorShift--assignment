@@ -1,6 +1,7 @@
 import { PipelineToolbar } from './toolbar';
 import { PipelineUI } from './ui';
 import { SubmitButton } from './submit';
+import { ResultModal } from './resultModal';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <PipelineUI />
         <SubmitButton />
       </section>
+      <ResultModal />
     </div>
   );
 }

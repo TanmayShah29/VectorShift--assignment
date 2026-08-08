@@ -33,6 +33,7 @@ const selector = (state) => ({
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
+  setConnectingHandle: state.setConnectingHandle,
 });
 
 export const PipelineUI = () => {
@@ -45,7 +46,8 @@ export const PipelineUI = () => {
       addNode,
       onNodesChange,
       onEdgesChange,
-      onConnect
+      onConnect,
+      setConnectingHandle,
     } = useStore(selector, shallow);
 
     const onDrop = useCallback(
@@ -89,6 +91,20 @@ export const PipelineUI = () => {
         event.dataTransfer.dropEffect = 'move';
     }, []);
 
+    // Highlight every compatible handle on other nodes while the user is
+    // dragging a new connection, and clear the highlight once they let go
+    // (whether or not the drag resulted in an actual edge).
+    const onConnectStart = useCallback(
+        (event, { nodeId, handleType }) => {
+          setConnectingHandle(nodeId, handleType);
+        },
+        [setConnectingHandle]
+    );
+
+    const onConnectEnd = useCallback(() => {
+        setConnectingHandle(null, null);
+    }, [setConnectingHandle]);
+
     return (
         <main className="canvas-shell">
           <div className="canvas-header">
@@ -103,12 +119,21 @@ export const PipelineUI = () => {
           </div>
 
         <div ref={reactFlowWrapper} className="reactflow-wrapper">
+            {nodes.length === 0 && (
+              <div className="canvas-empty-state" aria-hidden="true">
+                <div className="canvas-empty-state__icon">+</div>
+                <p className="canvas-empty-state__title">Your canvas is empty</p>
+                <p className="canvas-empty-state__hint">Drag a node from the sidebar to get started</p>
+              </div>
+            )}
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
+                onConnectStart={onConnectStart}
+                onConnectEnd={onConnectEnd}
                 onDrop={onDrop}
                 onDragOver={onDragOver}
                 onInit={setReactFlowInstance}
