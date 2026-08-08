@@ -144,7 +144,6 @@ export const PipelineUI = () => {
                 spellCheck={false}
               />
             </div>
-          </div>
             <div className="canvas-header__right">
               <div className="canvas-stats">
                 <span className="canvas-stat canvas-stat--nodes">
