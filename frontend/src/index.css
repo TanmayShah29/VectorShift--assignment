@@ -6,7 +6,10 @@ body {
   margin: 0;
   color: #172033;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #f4f6fb;
+  background:
+    radial-gradient(1100px 720px at 8% -8%, rgba(36, 84, 255, 0.07), transparent 60%),
+    radial-gradient(900px 640px at 104% 4%, rgba(18, 128, 92, 0.05), transparent 55%),
+    #f4f6fb;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -51,8 +54,8 @@ button {
   border-radius: 8px;
   color: #ffffff;
   font-weight: 800;
-  background: #2454ff;
-  box-shadow: 0 10px 24px rgba(36, 84, 255, 0.24);
+  background: linear-gradient(135deg, #3f74ff 0%, #7c5cff 100%);
+  box-shadow: 0 10px 24px rgba(36, 84, 255, 0.28);
 }
 
 .toolbar__brand h1 {
@@ -120,7 +123,6 @@ button {
   color: #ffffff;
   font-size: 12px;
   font-weight: 800;
-  background: #2454ff;
 }
 
 .draggable-node__label {
@@ -132,49 +134,63 @@ button {
   white-space: nowrap;
 }
 
-.draggable-node--green .draggable-node__icon,
-.base-node--green .base-node__icon {
-  background: #12805c;
+.draggable-node--green,
+.base-node--green {
+  --accent-a: #17a985;
+  --accent-b: #0d6b4c;
 }
 
-.draggable-node--purple .draggable-node__icon,
-.base-node--purple .base-node__icon {
-  background: #6d4aff;
+.draggable-node--purple,
+.base-node--purple {
+  --accent-a: #815bff;
+  --accent-b: #5636d6;
 }
 
-.draggable-node--orange .draggable-node__icon,
-.base-node--orange .base-node__icon {
-  background: #c96710;
+.draggable-node--orange,
+.base-node--orange {
+  --accent-a: #e0912f;
+  --accent-b: #b25d09;
 }
 
-.draggable-node--blue .draggable-node__icon,
-.base-node--blue .base-node__icon {
-  background: #2454ff;
+.draggable-node--blue,
+.base-node--blue {
+  --accent-a: #3f74ff;
+  --accent-b: #1c3fe0;
 }
 
-.draggable-node--teal .draggable-node__icon,
-.base-node--teal .base-node__icon {
-  background: #0f7f8c;
+.draggable-node--teal,
+.base-node--teal {
+  --accent-a: #14a6b6;
+  --accent-b: #0a6672;
 }
 
-.draggable-node--pink .draggable-node__icon,
-.base-node--pink .base-node__icon {
-  background: #c73573;
+.draggable-node--pink,
+.base-node--pink {
+  --accent-a: #e0509a;
+  --accent-b: #a72c62;
 }
 
-.draggable-node--yellow .draggable-node__icon,
-.base-node--yellow .base-node__icon {
-  background: #a76f00;
+.draggable-node--yellow,
+.base-node--yellow {
+  --accent-a: #cf9a2a;
+  --accent-b: #916300;
 }
 
-.draggable-node--red .draggable-node__icon,
-.base-node--red .base-node__icon {
-  background: #c23b35;
+.draggable-node--red,
+.base-node--red {
+  --accent-a: #dd5850;
+  --accent-b: #a02922;
 }
 
-.draggable-node--slate .draggable-node__icon,
-.base-node--slate .base-node__icon {
-  background: #475569;
+.draggable-node--slate,
+.base-node--slate {
+  --accent-a: #6b7d99;
+  --accent-b: #37475e;
+}
+
+.draggable-node__icon,
+.base-node__icon {
+  background: linear-gradient(135deg, var(--accent-a, #2454ff), var(--accent-b, #1435b0));
 }
 
 .workspace {
@@ -215,8 +231,19 @@ button {
 
 .canvas-header h2 {
   margin: 4px 0 0;
-  font-size: 20px;
+  font-size: 21px;
+  font-weight: 800;
   line-height: 1.2;
+  color: #172033;
+}
+
+.canvas-header h2 .heading-accent {
+  font-style: italic;
+  background: linear-gradient(90deg, #2454ff 0%, #7c5cff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .canvas-stats {
@@ -224,14 +251,34 @@ button {
   gap: 8px;
 }
 
-.canvas-stats span {
-  padding: 7px 10px;
+.canvas-stats__pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
   border: 1px solid #dce3ef;
   border-radius: 999px;
   color: #45516a;
   font-size: 13px;
   font-weight: 700;
   background: #f8faff;
+}
+
+.canvas-stats__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #94a3c4;
+}
+
+.canvas-stats__pill--nodes .canvas-stats__dot {
+  background: #2454ff;
+  box-shadow: 0 0 0 3px rgba(36, 84, 255, 0.16);
+}
+
+.canvas-stats__pill--edges .canvas-stats__dot {
+  background: #12805c;
+  box-shadow: 0 0 0 3px rgba(18, 128, 92, 0.16);
 }
 
 .reactflow-wrapper {
@@ -286,50 +333,80 @@ button {
 }
 
 .react-flow__pane {
-  background: #f7f9fd;
+  background:
+    radial-gradient(900px 500px at 50% -10%, rgba(36, 84, 255, 0.045), transparent 60%),
+    #f7f9fd;
 }
 
 .base-node {
   position: relative;
   width: 250px;
   min-height: 118px;
-  padding: 14px;
+  padding: 16px 14px 14px;
   border: 1px solid #dce3ef;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #ffffff;
   box-shadow: 0 14px 34px rgba(23, 32, 51, 0.12);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.base-node::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(90deg, var(--accent-a, #2454ff), var(--accent-b, #1435b0));
+  pointer-events: none;
+}
+
+.base-node:hover:not(.base-node--selected) {
+  border-color: #c7d0e3;
+  box-shadow: 0 20px 44px rgba(23, 32, 51, 0.16);
+  transform: translateY(-1px);
+}
+
+.base-node--selected {
+  border-color: #2454ff;
+  box-shadow: 0 0 0 3px rgba(36, 84, 255, 0.16), 0 20px 44px rgba(23, 32, 51, 0.18);
 }
 
 .base-node__delete {
   position: absolute;
-  top: 9px;
-  right: 9px;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
   display: grid;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  flex-shrink: 0;
   cursor: pointer;
-  place-items: center;
-  border: 1px solid #dce3ef;
-  border-radius: 7px;
-  color: #68738a;
-  font-size: 13px;
-  font-weight: 800;
   line-height: 1;
+  place-items: center;
+  border: 1px solid #e3e8f1;
+  border-radius: 999px;
+  color: #94a0b8;
   background: #ffffff;
-  transition: color 140ms ease, background 140ms ease, border-color 140ms ease;
+  box-shadow: 0 2px 6px rgba(23, 32, 51, 0.08);
+  transition: color 140ms ease, background 140ms ease, border-color 140ms ease, transform 140ms ease;
 }
 
 .base-node__delete:hover {
   border-color: #f0b7b4;
   color: #a92722;
   background: #fff1f0;
+  transform: scale(1.08);
 }
 
 .base-node__header {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-right: 26px;
+  /* button is 22px wide + 12px gap from right edge = 34px needed */
+  padding-right: 34px;
   margin-bottom: 12px;
 }
 
@@ -383,12 +460,22 @@ button {
   color: #172033;
   background: #f8faff;
   outline: none;
+  box-shadow: inset 0 1px 2px rgba(23, 32, 51, 0.04);
+  transition: border-color 140ms ease, box-shadow 140ms ease;
 }
 
 .node-field input,
 .node-field select {
   height: 32px;
   padding: 0 9px;
+}
+
+.node-field select {
+  appearance: none;
+  padding-right: 26px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'><path d='M1 1l4 4 4-4' stroke='%2368738a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
 }
 
 .node-field textarea {
@@ -410,6 +497,10 @@ button {
   height: 11px;
   border: 2px solid #ffffff;
   transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.node-handle:hover {
+  transform: scale(1.3);
 }
 
 .node-handle--target {
@@ -508,6 +599,23 @@ button {
   font-size: 13px;
 }
 
+.submit-bar__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin-top: 2px;
+  padding: 3px 10px;
+  border: 1px solid #d7e0f5;
+  border-radius: 999px;
+  color: #2454ff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  background: #eef3ff;
+}
+
 .submit-button {
   min-width: 150px;
   height: 42px;
@@ -527,9 +635,49 @@ button {
 .react-flow__controls,
 .pipeline-minimap {
   overflow: hidden;
-  border: 1px solid #dce3ef;
-  border-radius: 8px;
-  box-shadow: 0 8px 22px rgba(23, 32, 51, 0.1);
+  border: 1px solid rgba(220, 227, 239, 0.85);
+  border-radius: 10px;
+  box-shadow: 0 14px 34px rgba(23, 32, 51, 0.16);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.react-flow__controls-button {
+  border-bottom: 1px solid #eef1f7;
+  background: #ffffff;
+}
+
+.react-flow__controls-button:hover {
+  background: #f4f6fb;
+}
+
+.react-flow__edge-path {
+  stroke: #94a3c4;
+  stroke-width: 2;
+  transition: stroke 140ms ease, stroke-width 140ms ease;
+}
+
+.react-flow__edge:hover .react-flow__edge-path,
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #2454ff;
+  stroke-width: 2.5;
+}
+
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 6 6;
+  animation: flowDash 0.7s linear infinite;
+}
+
+@keyframes flowDash {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+
+.react-flow__connection-path {
+  stroke: #2454ff;
+  stroke-width: 2.5;
 }
 
 @media (max-width: 900px) {
