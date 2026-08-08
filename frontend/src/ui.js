@@ -1,5 +1,5 @@
-import { useState, useRef, useCallback } from 'react';
-import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import ReactFlow, { Controls, Background, MiniMap, SelectionMode } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
 import { TextNode } from './nodes/textNode';
@@ -43,6 +43,7 @@ const selector = (state) => ({
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
+  onNodesDelete: state.onNodesDelete,
   setConnectingHandle: state.setConnectingHandle,
 });
 
@@ -57,6 +58,7 @@ export const PipelineUI = () => {
       onNodesChange,
       onEdgesChange,
       onConnect,
+      onNodesDelete,
       setConnectingHandle,
     } = useStore(selector, shallow);
 
@@ -115,6 +117,21 @@ export const PipelineUI = () => {
         setConnectingHandle(null, null);
     }, [setConnectingHandle]);
 
+    // Press F to fit all nodes back into view
+    useEffect(() => {
+        const onKey = (e) => {
+            if (
+                e.key === 'f' || e.key === 'F' &&
+                // Don't fire while typing in an input
+                !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)
+            ) {
+                reactFlowInstance?.fitView({ padding: 0.15, duration: 400 });
+            }
+        };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, [reactFlowInstance]);
+
     return (
         <main className="canvas-shell">
           <div className="canvas-header">
@@ -127,15 +144,28 @@ export const PipelineUI = () => {
                 spellCheck={false}
               />
             </div>
-            <div className="canvas-stats">
-              <span className="canvas-stat canvas-stat--nodes">
-                <span className="canvas-stat__dot" aria-hidden="true" />
-                <span>{nodes.length} nodes</span>
-              </span>
-              <span className="canvas-stat canvas-stat--edges">
-                <span className="canvas-stat__dot" aria-hidden="true" />
-                <span>{edges.length} edges</span>
-              </span>
+          </div>
+            <div className="canvas-header__right">
+              <div className="canvas-stats">
+                <span className="canvas-stat canvas-stat--nodes">
+                  <span className="canvas-stat__dot" aria-hidden="true" />
+                  <span>{nodes.length} nodes</span>
+                </span>
+                <span className="canvas-stat canvas-stat--edges">
+                  <span className="canvas-stat__dot" aria-hidden="true" />
+                  <span>{edges.length} edges</span>
+                </span>
+              </div>
+              <button
+                className="fit-view-btn"
+                title="Fit all nodes in view (F)"
+                onClick={() => reactFlowInstance?.fitView({ padding: 0.15, duration: 400 })}
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M1 4.5V1.5h3M10 1.5h3v3M13 9.5v3h-3M4 12.5H1v-3"/>
+                </svg>
+                Fit view
+              </button>
             </div>
           </div>
 
@@ -153,6 +183,7 @@ export const PipelineUI = () => {
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
+                onNodesDelete={onNodesDelete}
                 onConnectStart={onConnectStart}
                 onConnectEnd={onConnectEnd}
                 onDrop={onDrop}
@@ -162,8 +193,22 @@ export const PipelineUI = () => {
                 proOptions={proOptions}
                 snapGrid={[gridSize, gridSize]}
                 connectionLineType="default"
-                connectionLineStyle={{ stroke: '#2454ff', strokeWidth: 2.5 }}
+                connectionLineStyle={{ stroke: 'hsl(222 60% 44%)', strokeWidth: 2 }}
                 fitView
+                minZoom={0.05}
+                maxZoom={3}
+                // ── Marquee / box-select ──────────────────────────────
+                // Left mouse drag creates a selection rectangle.
+                // Middle mouse (button 1) or right mouse (button 2) pans.
+                selectionOnDrag
+                panOnDrag={[1, 2]}
+                // Two-finger scroll pans the canvas (natural trackpad feel)
+                panOnScroll
+                selectionMode={SelectionMode.Partial}
+                // Delete or Backspace removes the current selection
+                deleteKeyCode={['Delete', 'Backspace']}
+                // Shift-click or Shift-drag adds to the selection
+                multiSelectionKeyCode="Shift"
             >
                 <Background variant="cross" color="#c8d3e8" gap={22} size={1} />
                 <Controls />

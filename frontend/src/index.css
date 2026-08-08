@@ -332,6 +332,43 @@ button {
   gap: 16px;
 }
 
+/* Right side of header: stats + fit-view button */
+.canvas-header__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Fit View button */
+.fit-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+  white-space: nowrap;
+}
+
+.fit-view-btn:hover {
+  background: var(--bg);
+  border-color: var(--border);
+  color: var(--ink);
+}
+
+.fit-view-btn:active {
+  background: var(--border);
+}
+
 .canvas-stat {
   display: flex;
   align-items: center;
@@ -814,6 +851,14 @@ button {
 
 @keyframes flowDash {
   to { stroke-dashoffset: -9; }
+}
+
+/* ─── SELECTION BOX ────────────────────────────────────── */
+/* The marquee rectangle drawn while dragging to select */
+.react-flow__selection {
+  background: color-mix(in srgb, hsl(222 60% 44%) 8%, transparent);
+  border: 1.5px solid hsl(222 60% 44%);
+  border-radius: 4px;
 }
 
 /* ─── RESULT MODAL ─────────────────────────────────────── */

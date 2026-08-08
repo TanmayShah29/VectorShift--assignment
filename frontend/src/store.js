@@ -48,6 +48,16 @@ export const useStore = create((set, get) => ({
         edges: get().edges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId),
       });
     },
+    // Called by ReactFlow's onNodesDelete (fires on keyboard Delete/Backspace
+    // for the current selection). Removes edges connected to any deleted node.
+    onNodesDelete: (deletedNodes) => {
+      const ids = new Set(deletedNodes.map((n) => n.id));
+      set({
+        edges: get().edges.filter(
+          (edge) => !ids.has(edge.source) && !ids.has(edge.target)
+        ),
+      });
+    },
     onNodesChange: (changes) => {
       set({
         nodes: applyNodeChanges(changes, get().nodes),
