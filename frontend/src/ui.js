@@ -2,21 +2,31 @@ import { useState, useRef, useCallback } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
-import { InputNode } from './nodes/inputNode';
-import { LLMNode } from './nodes/llmNode';
-import { OutputNode } from './nodes/outputNode';
 import { TextNode } from './nodes/textNode';
 import { ConfigNode } from './nodes/ConfigNode';
-import { getNodeDefaults } from './nodes/nodeDefinitions';
-
-import 'reactflow/dist/style.css';
+import { getNodeDefaults, nodeDefinitions } from './nodes/nodeDefinitions';
 
 const gridSize = 20;
+const accentColors = {
+  green: '#12805c',
+  purple: '#6d4aff',
+  orange: '#c96710',
+  blue: '#2454ff',
+  teal: '#0f7f8c',
+  pink: '#c73573',
+  yellow: '#a76f00',
+  red: '#c23b35',
+  slate: '#475569',
+};
+const getMiniMapNodeColor = (node) => accentColors[nodeDefinitions[node.type]?.accent] || '#94a3c4';
 const proOptions = { hideAttribution: true };
 const nodeTypes = {
-  customInput: InputNode,
-  llm: LLMNode,
-  customOutput: OutputNode,
+  // InputNode, LLMNode, and OutputNode had no behavior beyond what ConfigNode
+  // already provides — they just read from nodeDefinitions and forwarded to
+  // BaseNode.  Consolidating them here removes the duplication.
+  customInput: ConfigNode,
+  llm: ConfigNode,
+  customOutput: ConfigNode,
   text: TextNode,
   prompt: ConfigNode,
   transform: ConfigNode,
@@ -113,8 +123,14 @@ export const PipelineUI = () => {
               <h2>Design your AI pipeline</h2>
             </div>
             <div className="canvas-stats">
-              <span>{nodes.length} nodes</span>
-              <span>{edges.length} edges</span>
+              <span className="canvas-stats__pill canvas-stats__pill--nodes">
+                <span className="canvas-stats__dot" aria-hidden="true" />
+                {nodes.length} nodes
+              </span>
+              <span className="canvas-stats__pill canvas-stats__pill--edges">
+                <span className="canvas-stats__dot" aria-hidden="true" />
+                {edges.length} edges
+              </span>
             </div>
           </div>
 
@@ -140,12 +156,20 @@ export const PipelineUI = () => {
                 nodeTypes={nodeTypes}
                 proOptions={proOptions}
                 snapGrid={[gridSize, gridSize]}
-                connectionLineType='smoothstep'
+                connectionLineType="default"
+                connectionLineStyle={{ stroke: '#2454ff', strokeWidth: 2.5 }}
                 fitView
             >
-                <Background color="#d5dae8" gap={gridSize} />
+                <Background variant="dots" color="#c3cce3" gap={26} size={1.6} />
                 <Controls />
-                <MiniMap className="pipeline-minimap" />
+                <MiniMap
+                  className="pipeline-minimap"
+                  nodeColor={getMiniMapNodeColor}
+                  nodeStrokeWidth={0}
+                  maskColor="rgba(244, 246, 251, 0.75)"
+                  pannable
+                  zoomable
+                />
             </ReactFlow>
         </div>
         </main>

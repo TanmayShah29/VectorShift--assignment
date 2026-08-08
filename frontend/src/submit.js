@@ -16,12 +16,24 @@ export const SubmitButton = () => {
     setIsSubmitting(true);
 
     try {
+      // Send only the fields the backend actually uses — avoids leaking
+      // ReactFlow's internal state (position, selected, dragging, …) over the wire.
+      const payload = {
+        nodes: nodes.map(({ id }) => ({ id })),
+        edges: edges.map(({ source, target, sourceHandle, targetHandle }) => ({
+          source,
+          target,
+          sourceHandle,
+          targetHandle,
+        })),
+      };
+
       const response = await fetch(`${BACKEND_URL}/pipelines/parse`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ nodes, edges }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {

@@ -1,10 +1,15 @@
 import { BaseNode } from './BaseNode';
 import { nodeDefinitions } from './nodeDefinitions';
 
-export const ConfigNode = ({ id, data }) => {
+export const ConfigNode = ({ id, data, selected }) => {
   const definition = nodeDefinitions[data.nodeType];
 
   if (!definition) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn(
+        `[ConfigNode] Unknown nodeType "${data.nodeType}" — no definition found in nodeDefinitions.js.`
+      );
+    }
     return null;
   }
 
@@ -23,6 +28,7 @@ export const ConfigNode = ({ id, data }) => {
       inputs={definition.inputs}
       outputs={definition.outputs}
       fields={fields}
+      selected={selected}
     />
   );
 };

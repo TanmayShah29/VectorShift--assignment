@@ -1,6 +1,7 @@
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import { Handle, Position } from 'reactflow';
 import { useStore } from '../store';
+import { shallow } from 'zustand/shallow';
 
 const getHandlePosition = (index, total) => {
   if (total <= 1) {
@@ -73,18 +74,30 @@ export const BaseNode = memo(
     children,
     style,
     className = '',
+    selected = false,
   }) => {
     const deleteNode = useStore((state) => state.deleteNode);
-    const connectingNodeId = useStore((state) => state.connectingNodeId);
-    const connectingHandleType = useStore((state) => state.connectingHandleType);
 
-    // While the user drags a new edge from a source handle, every target
-    // handle on every *other* node is a valid drop point (and vice versa if
-    // they start the drag from a target handle) - highlight those so it's
-    // obvious at a glance where the connection can land.
-    const isConnecting = connectingNodeId !== null && connectingNodeId !== id;
-    const targetsHighlighted = isConnecting && connectingHandleType === 'source';
-    const sourcesHighlighted = isConnecting && connectingHandleType === 'target';
+    // Use a single shallow-compared selector that derives the three boolean
+    // flags this node needs from the global connecting state.  This means
+    // the component only re-renders when *its own* highlight state changes,
+    // instead of every node re-rendering whenever any edge drag starts.
+    const { targetsHighlighted, sourcesHighlighted } = useStore(
+      useCallback(
+        (state) => {
+          const draggingFromOtherNode =
+            state.connectingNodeId !== null && state.connectingNodeId !== id;
+          return {
+            targetsHighlighted:
+              draggingFromOtherNode && state.connectingHandleType === 'source',
+            sourcesHighlighted:
+              draggingFromOtherNode && state.connectingHandleType === 'target',
+          };
+        },
+        [id]
+      ),
+      shallow
+    );
 
     const handleDelete = (event) => {
       event.stopPropagation();
@@ -92,7 +105,10 @@ export const BaseNode = memo(
     };
 
     return (
-      <div className={`base-node base-node--${accent} ${className}`} style={style}>
+      <div
+        className={`base-node base-node--${accent} ${selected ? 'base-node--selected' : ''} ${className}`}
+        style={style}
+      >
         <button
           className="base-node__delete nodrag"
           type="button"
@@ -100,7 +116,14 @@ export const BaseNode = memo(
           aria-label={`Delete ${title} node`}
           title="Delete node"
         >
-          x
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path
+              d="M1 1L9 9M9 1L1 9"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+            />
+          </svg>
         </button>
 
         {inputs.map((input, index) => (
