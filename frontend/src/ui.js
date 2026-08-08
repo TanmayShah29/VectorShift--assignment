@@ -118,18 +118,23 @@ export const PipelineUI = () => {
     return (
         <main className="canvas-shell">
           <div className="canvas-header">
-            <div>
-              <span className="eyebrow">Workflow Canvas</span>
-              <h2>Design your AI pipeline</h2>
+            <div className="canvas-header__left">
+              <span className="canvas-header__eyebrow">Pipeline Editor</span>
+              <input
+                className="canvas-header__title"
+                defaultValue="Untitled Pipeline"
+                aria-label="Pipeline name"
+                spellCheck={false}
+              />
             </div>
             <div className="canvas-stats">
-              <span className="canvas-stats__pill canvas-stats__pill--nodes">
-                <span className="canvas-stats__dot" aria-hidden="true" />
-                {nodes.length} nodes
+              <span className="canvas-stat canvas-stat--nodes">
+                <span className="canvas-stat__dot" aria-hidden="true" />
+                <span>{nodes.length} nodes</span>
               </span>
-              <span className="canvas-stats__pill canvas-stats__pill--edges">
-                <span className="canvas-stats__dot" aria-hidden="true" />
-                {edges.length} edges
+              <span className="canvas-stat canvas-stat--edges">
+                <span className="canvas-stat__dot" aria-hidden="true" />
+                <span>{edges.length} edges</span>
               </span>
             </div>
           </div>
@@ -160,7 +165,7 @@ export const PipelineUI = () => {
                 connectionLineStyle={{ stroke: '#2454ff', strokeWidth: 2.5 }}
                 fitView
             >
-                <Background variant="dots" color="#c3cce3" gap={26} size={1.6} />
+                <Background variant="cross" color="#c8d3e8" gap={22} size={1} />
                 <Controls />
                 <MiniMap
                   className="pipeline-minimap"

@@ -77,7 +77,16 @@ export const useStore = create((set, get) => ({
       }
 
       set({
-        edges: addEdge({...connection, type: 'smoothstep', animated: true, markerEnd: {type: MarkerType.Arrow, height: '20px', width: '20px'}}, get().edges),
+        edges: addEdge(
+          {
+            ...connection,
+            type: 'default',
+            // No animated:true — solid lines read as "connected"
+            style: { stroke: '#94a3b8', strokeWidth: 1.6 },
+            markerEnd: { type: MarkerType.ArrowClosed, color: '#94a3b8', width: 14, height: 14 },
+          },
+          get().edges
+        ),
       });
     },
     updateNodeField: (nodeId, fieldName, fieldValue) => {
