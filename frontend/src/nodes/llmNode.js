@@ -1,3 +1,7 @@
+// LLM node component. Reads the 'llm' definition from nodeDefinitions and
+// composes BaseNode with its system/prompt inputs, response output, and model
+// + temperature fields. Kept as its own file for clarity even though the
+// generic ConfigNode can render the same shape.
 import { BaseNode } from './BaseNode';
 import { nodeDefinitions } from './nodeDefinitions';
 

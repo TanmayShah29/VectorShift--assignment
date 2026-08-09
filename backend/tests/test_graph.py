@@ -1,10 +1,19 @@
+# pytest suite for graph.analyze_graph() — covers empty graphs, single nodes,
+# chains, diamonds, cycles, self-loops, disconnected components, and edges
+# that reference unknown nodes. Run from the backend directory with: pytest
 import os
 import sys
 
 # Allow running `pytest` from the backend/ directory without a package install.
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from graph import is_directed_acyclic_graph
+from graph import analyze_graph
+
+
+def is_directed_acyclic_graph(nodes, edges):
+    # Thin adapter so the tests below stay readable after graph.py's API was
+    # upgraded from a boolean helper to analyze_graph() returning a dict.
+    return analyze_graph(nodes, edges)["is_dag"]
 
 
 def make_nodes(ids):

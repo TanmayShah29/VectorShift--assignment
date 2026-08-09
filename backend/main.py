@@ -1,3 +1,12 @@
+# FastAPI application for the assignment backend.
+#
+# Exposes the pipeline-validation API the frontend submits to:
+#   GET  /                 -> health check
+#   POST /pipelines/parse  -> validate a pipeline (nodes + edges)
+#
+# CORS is permissive for the local React dev server by default and can be
+# overridden via the FRONTEND_ORIGINS env var. All graph analysis is
+# delegated to graph.analyze_graph().
 import os
 from typing import Any
 
@@ -5,7 +14,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from graph import is_directed_acyclic_graph
+from graph import analyze_graph
 
 
 class Pipeline(BaseModel):
@@ -38,8 +47,4 @@ def read_root():
 
 @app.post('/pipelines/parse')
 def parse_pipeline(pipeline: Pipeline):
-    return {
-        'num_nodes': len(pipeline.nodes),
-        'num_edges': len(pipeline.edges),
-        'is_dag': is_directed_acyclic_graph(pipeline.nodes, pipeline.edges),
-    }
+    return analyze_graph(pipeline.nodes, pipeline.edges)

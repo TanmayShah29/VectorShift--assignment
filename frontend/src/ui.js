@@ -1,3 +1,7 @@
+// The main canvas surface. Wraps React Flow and wires it to the store:
+// drop-to-add nodes, connect edges, marquee selection, pan/zoom, fit-view (F),
+// plus the minimap, controls, and background. Also renders the canvas header
+// (pipeline name + node/edge stats) and an empty-state hint on first load.
 import { useState, useRef, useCallback, useEffect } from 'react';
 import ReactFlow, { Controls, Background, MiniMap, SelectionMode } from 'reactflow';
 import { useStore } from './store';
@@ -121,8 +125,7 @@ export const PipelineUI = () => {
     useEffect(() => {
         const onKey = (e) => {
             if (
-                (e.key === 'f' || e.key === 'F') &&
-                // Don't fire while typing in an input
+                ((e.key === 'f' || e.key === 'F')) &&
                 !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)
             ) {
                 reactFlowInstance?.fitView({ padding: 0.15, duration: 400 });

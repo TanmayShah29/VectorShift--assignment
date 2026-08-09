@@ -1,3 +1,5 @@
+// Left sidebar. Renders the brand header plus one DraggableNode button for
+// every type in the nodePalette (ordered in nodes/nodeDefinitions.js).
 import { DraggableNode } from './draggableNode';
 import { nodeDefinitions, nodePalette } from './nodes/nodeDefinitions';
 

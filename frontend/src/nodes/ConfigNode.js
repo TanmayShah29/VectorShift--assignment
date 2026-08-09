@@ -1,3 +1,7 @@
+// Default renderer for "standard" node types. Looks the node's definition up
+// in nodeDefinitions, injects the node's current field values, and delegates
+// all rendering to BaseNode. Most node types (prompt, transform, filter, api,
+// database, and input/llm/output) go through here with no extra code.
 import { BaseNode } from './BaseNode';
 import { nodeDefinitions } from './nodeDefinitions';
 

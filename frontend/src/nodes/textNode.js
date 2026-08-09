@@ -1,3 +1,8 @@
+// Text node — the node type with genuinely custom behavior. Parses
+// {{ variable }} references out of the text, exposes each one as a dynamic
+// input handle, shows clickable pills that re-insert a variable at the cursor,
+// and auto-resizes the node's width/rows as the user types. Everything else
+// delegates to BaseNode.
 import { useMemo, useRef } from 'react';
 import { BaseNode } from './BaseNode';
 import { nodeDefinitions } from './nodeDefinitions';

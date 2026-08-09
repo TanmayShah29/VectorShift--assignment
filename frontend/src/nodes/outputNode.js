@@ -1,3 +1,7 @@
+// Output node component. Reads the 'customOutput' definition from
+// nodeDefinitions and composes BaseNode with its value input and editable
+// fields (name + type). Kept as its own file for clarity even though the
+// generic ConfigNode can render the same shape.
 import { BaseNode } from './BaseNode';
 import { nodeDefinitions } from './nodeDefinitions';
 

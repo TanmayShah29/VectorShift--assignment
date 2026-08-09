@@ -1,3 +1,8 @@
+// The generic visual shell every node type renders through: a header (icon +
+// title + description), a delete button, auto-spaced input/output handles,
+// and a field list rendered from a plain config array. Also drives the
+// connection-drag highlight by reading the store's connecting state, so all
+// valid handles pulse while a new edge is being dragged.
 import { memo, useCallback } from 'react';
 import { Handle, Position } from 'reactflow';
 import { useStore } from '../store';

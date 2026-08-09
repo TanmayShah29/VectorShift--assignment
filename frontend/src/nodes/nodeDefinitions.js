@@ -1,3 +1,8 @@
+// Data-driven registry of every node type: title, icon, accent color,
+// input/output handles, editable fields, and per-node default values. Also
+// exports the ordered palette used by the toolbar and the getNodeDefaults()
+// factory that seeds the data of a freshly dropped node. Adding a standard
+// node type usually means adding one entry here and nothing else.
 export const nodeDefinitions = {
   customInput: {
     label: 'Input',

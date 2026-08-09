@@ -1,3 +1,6 @@
+// Unit tests for textNodeUtils.js: variable extraction and auto-resize
+// dimension logic for the Text node. Run from the frontend directory with
+// `npm test`.
 import { getVariables, getTextNodeDimensions } from './textNodeUtils';
 
 describe('getVariables', () => {

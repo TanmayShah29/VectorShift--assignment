@@ -1,5 +1,7 @@
-// Shared logic for the Text node, pulled out of textNode.js so it can be
-// unit-tested independently of React/reactflow.
+// Pure, framework-free helpers used by the Text node: extracting the unique
+// {{ variable }} identifiers from text and computing the node's auto-resize
+// width/rows. Kept separate from textNode.js so they can be unit-tested
+// without React or reactflow (see textNodeUtils.test.js).
 
 const variablePattern = /{{\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\s*}}/g;
 

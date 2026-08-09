@@ -1,3 +1,8 @@
+// Zustand store — the single source of truth for all pipeline state: the
+// node/edge lists, per-type id counters, connection-drag highlight state, and
+// the last /pipelines/parse result. React Flow's nodes/edges are derived from
+// here and every mutation (add/delete/update/connect) goes through these
+// actions, which is also where self-loops and duplicate edges are rejected.
 import { create } from "zustand";
 import {
     addEdge,

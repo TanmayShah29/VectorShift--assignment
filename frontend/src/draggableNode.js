@@ -1,3 +1,6 @@
+// A single draggable button in the left palette. On drag start it writes its
+// node type into the 'application/reactflow' dataTransfer payload, which ui.js
+// reads back when the node is dropped onto the canvas.
 export const DraggableNode = ({ type, definition }) => {
   const onDragStart = (event, nodeType) => {
     const appData = { nodeType };

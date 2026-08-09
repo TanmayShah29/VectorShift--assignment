@@ -1,3 +1,8 @@
+/* Global stylesheet for the pipeline builder.
+   Design tokens + reset first, then each major surface in order: app shell,
+   toolbar/palette, canvas header, React Flow canvas, nodes (base + fields +
+   text-node variables), submit bar, result modal, and responsive rules. */
+
 /* ─── TOKENS ──────────────────────────────────────────── */
 :root {
   --font-sans: 'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -991,6 +996,97 @@ button {
 .result-modal__close:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
+}
+
+/* ─── MODAL SECTIONS ─────────────────────────────────────── */
+.result-modal__section {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.result-modal__section:last-child {
+  margin-bottom: 24px;
+}
+
+.result-modal__section-title {
+  margin: 0 0 10px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.result-modal__path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 4px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+}
+
+.result-modal__path--cycle {
+  background: #fff8f8;
+  border-color: #fca5a5;
+}
+
+.result-modal__path-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.result-modal__node-id {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border-dk);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.result-modal__path--cycle .result-modal__node-id {
+  color: #b91c1c;
+  border-color: #fca5a5;
+}
+
+.result-modal__path-arrow {
+  color: var(--dim);
+  font-size: 14px;
+  margin-left: 2px;
+}
+
+.result-modal__path--cycle .result-modal__path-arrow {
+  color: #f87171;
+}
+
+.result-modal__empty-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.result-modal__chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.result-modal__chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
 }
 
 /* ─── RESPONSIVE ───────────────────────────────────────── */

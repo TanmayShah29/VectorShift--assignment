@@ -1,3 +1,7 @@
+// Bottom "Submit Pipeline" bar. Serializes the current graph into the exact
+// shape the backend expects (only id for nodes; source/target/handles for
+// edges), POSTs it to /pipelines/parse, and hands the response to the store
+// for the ResultModal to display.
 import { useState } from 'react';
 import { useStore } from './store';
 
